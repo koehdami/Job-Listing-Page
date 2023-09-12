@@ -1,0 +1,85 @@
+{% extends "main/layout.html" %}
+
+
+{% block body %}
+
+    {% if edit %}
+        <form action="{% url 'editPosting' %}" method="post" class="container d-flex justify-content-center align-items-center w-100 h-100 my-2 my-md-0">
+    {% else %}
+        <form action="{% url 'createListing' %}" method="post" class="container d-flex justify-content-center align-items-center w-100 h-100 my-2 my-md-0">
+    {% endif %}
+        {% csrf_token %}
+        <div class="create-form d-flex flex-column px-3 border border-2 border-dark gap-3 py-2">
+            <p class="main-font m-0 h4">Create new listing</p>
+            <div class="d-flex flex-column">
+                <label for="title" class="main-font m-0 h5">Title</label>
+                <input required value="{{ job.title }}" name="title" type="text" class="w-100 border border-2 border-dark rounded px-2">
+            </div>
+            <div class="d-flex flex-column">
+                <label for="companyName" class="main-font m-0 h5">Company Name</label>
+                <input required name="companyName" type="text" value="{{ job.company }}"class="w-100 border border-2 border-dark rounded px-2">
+            </div>
+            <div class="d-flex flex-column">
+                <label for="jobDescription" class="main-font m-0 h5">Job description</label>
+                <textarea required name="jobDescription" rows="7" class="border border-2 border-dark rounded px-2">{{ job.description }}</textarea>
+            </div>
+            <div class="d-flex flex-column flex-md-row gap-2 w-100">
+                <div class="d-flex flex-column w-100">
+                    <label for="category" class="main-font m-0 h5">Category</label>
+                    <select required name="category" id="" class="main-font select-create border border-2 border-dark rounded w-100">
+                        {% if job %}
+                            <option selected hidden value="{{ job.category.id }}">{{ job.category.name }}</option>
+                        {% else %}
+                            <option selected disabled hidden value="">Select Category</option>
+                        {% endif %}
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="d-flex flex-column w-100">
+                    <label for="language" class="main-font m-0 h5">Language</label>
+                    <select required name="language" id="" class="main-font select-create border border-2 border-dark rounded w-100">
+                        {% if job %}
+                            <option selected hidden value="{{ job.languages.id }}">{{ job.languages.name }}</option>
+                        {% else %}
+                            <option selected disabled hidden value="">Select Language</option>
+                        {% endif %}
+                        {% for language in languages %}
+                        <option value="{{ language.id }}">{{ language.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="d-flex flex-column w-100">
+                    <label for="time" class="main-font m-0 h5">Time type</label>
+                    <select required name="time" id="" class="main-font select-create border border-2 border-dark rounded w-100">
+                        {% if job %}
+                            {% if job.part_time %}
+                                <option selected hidden value="True">Part-Time</option>
+                            {% else %}
+                                <option selected hidden value="False">Full-Time</option>
+                            {%endif %}
+                        {% else %}
+                            <option selected disabled hidden value="">Select Time</option>
+                        {% endif %}
+                        <option value="False">Full-Time</option>
+                        <option value="True">Part-Time</option>
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex flex-column">
+                <label for="jobPay" class="main-font m-0 h5">Job pay</label>
+                <input required name="jobPay" type="text" value="{{ job.pay }}" class="w-100 border border-2 border-dark rounded px-2">
+            </div>
+            <div class="d-flex">
+                {% if edit %}
+                    <input type="submit" value="Save" class="bg-dark text-light main-font w-100 rounded my-3">
+                    <input type="hidden" name="job_id_edit" value="{{ job.id }}">
+                {% else %}
+                    <input type="submit" value="Submit" class="bg-dark text-light main-font w-100 rounded my-3">
+                {% endif %}
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

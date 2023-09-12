@@ -1,0 +1,54 @@
+{% extends "main/layout.html" %}
+
+
+{% block body %}
+
+<div class="container main-block mt-4">
+    <div class="row d-flex gap-3">
+        <div class="col d-flex flex-column border border-dark border-2 p-4 w-25 mx-2">
+            <div class="text-center mb-2">
+                <iconify-icon icon="gg:profile" width="130" height="130"></iconify-icon>
+                <p class="profile-text-lg">{{ user.first_name }}  {{ user.last_name }}</p>
+                <p class="profile-text-sm">{{ user.email }}</p>
+            </div>
+            <a href="{% url 'mylistings' %}"><button class="w-100 bg-dark text-light main-font">My Listings</button></a>
+            {% comment %} <div class="text-center">
+                <p class="profile-text-sm">Language: German, Englisch</p>
+                <p class="profile-text-sm">Location: Germany</p>
+                <p class="profile-text-sm">Age: 25</p>
+            </div> {% endcomment %}
+        </div>
+        <div class="col-md-8 col-12 d-flex flex-column p-2 p-md-0">
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex flex-column border border-2 border-dark p-4">
+                    <label class="job-label mx-2" for="current-job">Current Job</label>
+                    <form class="d-flex bg-light border border-dark border-2 mx-2" action="{% url 'profile' %}" method="post">
+                        {% csrf_token %}
+                        <input class="w-100 main-font border-0" type="text" name="current-job" value="{{ user.user_data.current_job }}">
+                        <input type="submit" value="SAVE" class="border-0 bg-dark text-light main-font text-center"></input>
+                    </form>
+                    <label class="job-label mx-2" for="title-job">Job Title</label>
+                    <form class="d-flex bg-light border border-dark border-2 mx-2" action="{% url 'profile' %}" method="post">
+                        {% csrf_token %}
+                        <input class="w-100 main-font border-0" type="text" name="title-job" value="{{ user.user_data.job_title }}">
+                        <input type="submit" value="SAVE" class="border-0 bg-dark text-light main-font text-center"></input>
+                    </form>
+                </div>
+                <div class="d-flex justify-content-center items-align-center gap-4">
+                    <div class="w-50 d-flex flex-column text-center justify-content-center items-align-center border border-2 border-dark p-3 p-md-5">
+                        <iconify-icon icon="pepicons-pop:cv" width="100%" height="100"></iconify-icon>
+                        <button class="select-file-btn">Select File</button>
+                        <p class="upload-text">Upload CV</p>
+                    </div>
+                    <div class="w-50 d-flex flex-column text-center justify-content-center items-align-center border border-2 border-dark p-3 p-md-5">
+                        <iconify-icon icon="mdi:certificate-outline" width="100%" height="100"></iconify-icon>
+                        <button class="select-file-btn">Select File</button>
+                        <p class="upload-text">Upload Certificate</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

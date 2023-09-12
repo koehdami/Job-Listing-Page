@@ -1,0 +1,53 @@
+{% extends "main/layout.html" %}
+
+{% block body %}
+<div class="main-block overflow-auto my-0 my-lg-2">
+    <div class="image-container">
+        <img class="home-image" src="https://i.pinimg.com/originals/d6/a6/92/d6a692fc1e0489955e2b4ed4ae742c76.jpg" alt="WorkBackgroundImage">
+    </div>
+    <div class="container card-container my-4 h-auto">
+        <div class="d-flex row justify-content-evenly h-auto mx-1 mx-md-0">
+            <div class="col-md col-9 d-flex flex-column mx-2 mx-lg-1 py-3 my-2 my-md-0 bg-dark card-container">
+                <div class="d-flex text-center justify-content-center items-align-center w-100">
+                    <iconify-icon width="75%" height="90%" class="d-flex w-100 justify-content-center items-align-center text-light" icon="gala:search"></iconify-icon>
+                </div>
+                <div class="mb-4">
+                    <p class="text-light card-header">Find Your Dream Job</p>
+                    <p class="text-light card-text">Discover Exciting Opportunities
+                        Browse through a wide range of job listings from top companies and industries. Your dream job is just a click away.</p>
+                </div>
+                <div class="h-auto text-center my-3">
+                    <a href="{% url 'jobs' %}"><button class="bg-light text-dark main-font w-75 border-0">Search Jobs</button></a>
+                </div>
+            </div>
+            <div class="col-md col-9 d-flex flex-column mx-2 mx-lg-1 py-3 my-2 my-md-0 bg-dark card-container">
+                <div class="d-flex text-center justify-content-center items-align-center w-100">
+                    <iconify-icon width="75%" height="90%" class="d-flex w-100 justify-content-center items-align-center text-light" icon="icon-park-outline:browser"></iconify-icon>
+                </div>
+                <div class="mb-4">
+                    <p class="text-light card-header">Post Your Job Listing</p>
+                    <p class="text-light card-text">Recruit Top Talent
+                        Attract the best candidates by posting your job openings on our platform. Reach a diverse pool of qualified professionals.</p>
+                </div>
+                <div class="h-auto text-center my-3">
+                    <a href="{% url 'createListing' %}"><button class="bg-light text-dark main-font w-75 border-0">Post a Job</button></a>
+                </div>
+            </div>
+            <div class="col-md col-9 d-flex flex-column mx-2 mx-lg-1 py-3 my-2 my-md-0 bg-dark card-container">
+                <div class="d-flex text-center justify-content-center items-align-center w-100">
+                    <iconify-icon width="75%" height="90%" class="d-flex w-100 justify-content-center items-align-center text-light" icon="grommet-icons:resources"></iconify-icon>
+                </div>
+                <div class="mb-4">
+                    <p class="text-light card-header">Career Resources</p>
+                    <p class="text-light card-text">Advance Your Career
+                        Access valuable resources, tips, and advice to boost your career. From resume writing to interview strategies, we've got you covered.</p>
+                </div>
+                <div class="h-auto text-center my-3">
+                    <button class="bg-light text-dark main-font w-75 border-0">Explore Resources</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+
+{% endblock %}

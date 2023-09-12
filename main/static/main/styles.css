@@ -1,0 +1,178 @@
+
+
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.logo{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 21px;
+    letter-spacing: 12px;
+    font-family: Iceland;
+}
+
+
+@media screen and (max-width:700px) {
+    nav .links{
+        display:none
+    }
+}
+
+
+
+
+nav .links{
+    font-family: Iceland;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+nav .actionBtn{
+    border: none;
+    background: black;
+    color: white;
+    font-family: Iceland;
+    width: 95px;
+    height: 25px;
+}
+
+footer{
+    font-family: Iceland;
+    background-color: black;
+}
+
+.footer-links p{
+    font-size: 13px;
+}
+
+.footer-text{
+    font-size: 17px;
+    word-spacing: 5px;
+}
+
+.image-container{
+    width: 100%;
+    height: 50%;
+}
+
+.home-image{
+    width: 100%;
+    height: 100%;
+}
+
+
+.card-header{
+    font-family: iceland;
+    font-size: 25px;
+    text-align: center;
+    letter-spacing: 3px;
+    margin-bottom: 5px;
+}
+
+.card-text{
+    font-size: 13px;
+    text-align: center;
+    padding-left:17px;
+    padding-right:17px;
+}
+
+.main-font{
+    font-family: Iceland;
+}
+
+.select-file-btn{
+    border: none;
+    background: black;
+    color: white;
+    font-family: iceland;
+    font-size: 20px;
+    border-radius:5px;
+    margin-top:14px;
+}
+
+.upload-text{
+    font-family: iceland;
+    font-size: 16px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.job-label{
+    font-family: iceland;
+    font-size: 20px;
+    margin-bottom: -6px;
+}
+
+.profile-text-sm{
+    font-family: iceland;
+    font-size: 17px;
+    margin-bottom: 10px;
+    line-height: 0.8;
+}
+
+.profile-text-lg{
+    font-family: iceland;
+    font-size: 22px;
+    margin-bottom: -8px;
+}
+
+.main-block{
+    height:100%;
+}
+
+
+
+#searchSettings{
+    display: none;
+}
+
+.create-form{
+    width: 75%;
+}
+
+.select-create{
+    font-size: 20px;
+}
+
+.activeBtnJobs{
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 0.5rem!important;
+    background: black;
+    color: white;
+}
+
+@media screen and (max-width:768px) {
+    .create-form{
+        width:100%;
+    }
+    .profile-container{
+        height:fit-content;
+        min-height: 82vh;
+        margin-bottom: 21px;
+    }
+    .card-container{
+        width:100%;
+    }
+    .image-container{
+        height:35vh;
+    }
+    .contact-container{
+        height:fit-content;
+    }
+    body{
+        display: flex;
+        flex-direction: column;
+        height: max-content;
+    }
+    #searchSettings{
+        display:block;
+    }
+}
+
+

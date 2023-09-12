@@ -1,0 +1,32 @@
+{% extends "main/layout.html" %}
+
+{% block body %}
+<div class="container main-font h1 mt-3 text-center">My Listings</div>
+<div class="container d-flex w-100 h-100 px-2">
+    <div id="searchEntries" class="d-flex flex-column w-100 border border-2 border-dark p-2 mb-5 gap-2">
+        <a href="{% url 'createListing' %}" class="text-end"><button class="bg-dark text-light main-font">Create Listing</button></a>
+        {% for job in jobs %}
+        <div style="height:fit-content;" class="d-flex flex-column border border-2 border-dark p-3">
+            <div class="d-flex justify-content-between w-100">
+                <p style="margin-bottom: -8px;" class="main-font h3">{{ job.title }}</p>
+                <div class="d-flex gap-2">
+                    <form action="{% url 'deletePosting' %}" method="post">
+                        {% csrf_token %}
+                        <input name="job_id" type="hidden" value="{{ job.id }}">
+                        <input type="submit" value="Delete" class="bg-danger text-light main-font border-0">
+                    </form>
+                    <form action="{% url 'editPosting' %}" method="post">
+                        {% csrf_token %}
+                        <input name="job_id" type="hidden" value="{{ job.id }}">
+                        <input type="submit" value="Edit" class="bg-dark text-light main-font border-0">
+                    </form>
+                </div>
+            </div>
+            <p class="main-font">{{ job.company }}</p>
+            <p class="main-font">{{ job.description }}</p>
+            <p class="main-font m-0">Estimated Pay - {{ job.pay }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

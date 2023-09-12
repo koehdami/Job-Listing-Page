@@ -1,0 +1,181 @@
+{% extends 'main/layout.html' %}
+
+
+
+{% block body %}
+
+<script>
+    // loop through all items parent.children check for id and apply regular class to make sure only one item is selcted, also check if btn was allready selected for unselect
+    const applyActive = (btn, regularBtnClassList) => {
+        const btnParent = btn.parentElement.children
+        const btnClickedAgain = (btn.className === "activeBtnJobs")
+        for(let child of btnParent){
+            if(child.id === "optionsBtn"){
+                child.className = regularBtnClassList
+            }
+        }
+        if(btnClickedAgain){
+            btn.className = regularBtnClassList
+        }else{
+            btn.className = "activeBtnJobs"
+        }
+    }
+
+    // check for all inputfields of entrie where type is hidden => collect in arr and return
+    const collectEntrieData = (entrie) => {
+        const entrieChildren = entrie.children
+        const attribuesArr = []
+        for(let child of entrieChildren){
+            if(child.type === "hidden"){
+                attribuesArr.push(child.value)
+            }
+        }
+        return attribuesArr
+    }
+
+    // check for all activeBtns and collect the values (index 0 of activeButton.children -> else item.value)
+    const applyFilters = (regularJobEntrieClassList) => {
+        const jobEntries = document.querySelectorAll("#jobEntrie")
+        const jobEntriesArr = [...jobEntries]
+
+        const filters = document.querySelectorAll(".activeBtnJobs")
+        const filtersArr = [...filters]
+
+        const filterAttributes = []
+        // fill filterAttributes to get all active filters also check if has children else get attribute of items.value
+        for(let item of filtersArr){
+            if(item.childElementCount > 0){
+                if(!filterAttributes.includes(item.children[0].innerHTML)){
+                    filterAttributes.push(item.children[0].innerHTML)
+                }
+            }else{
+                if(!filterAttributes.includes(item.value)){
+                    filterAttributes.push(item.value)
+                }
+            }
+        }
+        // check jobEntrie to get attributes
+        for(let entrie of jobEntriesArr){
+            const entrieAttributes = collectEntrieData(entrie)
+            // check if all attributes of filterAttributes are found in entrieAttributes
+            if(filterAttributes.every(r => entrieAttributes.includes(r))){
+                entrie.classList = regularJobEntrieClassList
+            }else{
+                entrie.classList = "d-none"
+            }
+
+        }
+
+    }
+    // apply eventlisteners on all btns, send regular styles of elements
+    const btnEvents = (btnID) => {
+        const btns = document.querySelectorAll(`#${btnID}`)  
+        const regularBtnClassList = document.querySelector(`div#${btnID}`).className
+        const regularJobEntrieClassList = document.querySelector("#jobEntrie").className
+        for(let btn of btns){
+            btn.addEventListener("click", () => {
+                applyActive(btn, regularBtnClassList)
+                applyFilters(regularJobEntrieClassList)
+            })
+        }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        // get regular classList to display div when attribute matches
+
+        // make menuButtons clickable
+        btnEvents("optionsBtn")
+        const searchSettingsButton = document.querySelector("#searchSettings")
+        const searchWindow = document.querySelector("#searchWindow")
+        const searchEntries = document.querySelector("#searchEntries")
+        const classSettingsSearch = searchWindow.className
+        const classSettingsEntries = searchEntries.className
+        searchSettingsButton.addEventListener("click", () => {
+            if(searchWindow.style.display == "none"){
+                searchWindow.style.display = "block"
+                searchWindow.classList = classSettingsSearch
+                searchEntries.classList = classSettingsEntries
+            }else{
+                searchWindow.style.display = "none"
+                searchWindow.classList = ""
+                searchEntries.classList = classSettingsEntries
+            }
+        })
+    });
+
+</script>
+
+<div class="container d-flex mt-4 mb-0">
+    <button id="searchSettings" class="bg-dark text-light main-font w-100 rounded">Search Settings Toggle</button>
+</div>
+
+<div class="container d-flex justify-content-center main-block mt-2 mb-4">
+    <div class="row w-100">
+        <div id="searchWindow" class="col-md-3 col-5 d-flex flex-column align-items-center gap-2 p-2 border border-2 border-dark border-end-0">
+            <div class="d-flex w-100">
+                <input class="border border-dark border-2 rounded ps-2 main-font w-100" type="text">
+            </div>
+            <div id="timeContainer" class="d-flex w-100 gap-2">
+                <button id="optionsBtn" value="False" class="p-2 w-100 bg-light border border-dark border-2 rounded">FULL TIME</button>
+                <button id="optionsBtn" value="True" class="p-2 w-100 bg-light border border-dark border-2 rounded">PART TIME</button>
+            </div>
+            <div class="d-flex flex-column w-100 border border-2 border-dark rounded px-2 py-1">
+                <div class="d-flex">
+                    <p class="main-font m-0">Money Options</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="main-font">1000€</p>
+                    <p class="main-font">100.000€</p>
+                </div>
+                <div class="d-flex mx-4 mb-2">
+                    <div class="w-100 border border-2 border-dark"></div>
+                </div>
+            </div>
+            {% if categories %}
+            <div id="categoryContainer" class="d-flex flex-column gap-2 border border-dark border-2 rounded px-2 py-1 w-100">
+                <div class="d-flex">
+                    <p class="main-font m-0">Job Categories</p>
+                </div>
+                {% for category in categories %}
+                    <div id="optionsBtn" class="p-2 w-100 bg-light border border-dark border-2 rounded">
+                        <p id="selectable_categories" class="main-font m-0">{{ category.name }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if languages %}
+            <div id="langaugeContainer" class="d-flex flex-column w-100 px-2 py-1 border border-dark border-2 rounded gap-2">
+                <div class="d-flex">
+                    <p class="main-font m-0">Language</p>
+                </div>
+                {% for language in languages %}
+                    <div id="optionsBtn" class="p-2 w-100 bg-light border border-dark border-2 rounded">
+                        <p id="selectable_languages" class="main-font m-0">{{ language.name }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div id="searchEntries" class="col-md-9 col d-flex flex-column border border-2 border-dark p-2 gap-2">
+            <div class="align-self-end d-flex gap-0 gap-sm-2">
+                <a href="{% url 'mylistings' %}" class="text-end"><button class="bg-dark text-light main-font">My Listings</button></a>
+                <a href="{% url 'createListing' %}" class="text-end"><button class="bg-dark text-light main-font">Create Listing</button></a>
+            </div>
+            {% for job in jobs %}
+            <div id="jobEntrie" style="height:fit-content;" class="d-flex flex-column border border-2 border-dark p-3">
+                <input id="categorySearchKey" type="hidden" name="category" value="{{ job.category.name }}">
+                <input id="languageSearchKey" type="hidden" name="langauge" value="{{ job.languages.name }}">
+                <input id="timeSearchKey" type="hidden" name="time" value="{{ job.part_time }}">
+                <input type="hidden" name="time" value="{{ job.part_time}}">
+                <p style="margin-bottom: -8px;" class="main-font h3">{{ job.title }}</p>
+                <p class="main-font">{{ job.company }}</p>
+                <p class="main-font">{{ job.description }}</p>
+                <p class="main-font m-0">Estimated Pay - {{ job.pay }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
