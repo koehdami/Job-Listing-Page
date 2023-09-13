@@ -30,11 +30,6 @@ class job_offers(models.Model):
     post_date = models.DateTimeField(auto_now=True)
     part_time = models.BooleanField(default=False)
 
-class favorites(models.Model):
-    id = models.IntegerField(primary_key=True, unique=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    job_offer_id = models.ForeignKey(job_offers, on_delete=models.CASCADE)
-
 class applications(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

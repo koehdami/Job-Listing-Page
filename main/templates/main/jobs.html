@@ -199,6 +199,7 @@
                 <a href="{% url 'createListing' %}" class="text-end"><button class="bg-dark text-light main-font">Create Listing</button></a>
             </div>
             {% for job in jobs %}
+            <a class="text-decoration-none text-dark" href="{% url 'jobPage' job.id %}">
             <div id="jobEntrie" style="height:fit-content;" class="d-flex flex-column border border-2 border-dark p-3">
                 <input id="categorySearchKey" type="hidden" name="category" value="{{ job.category.name }}">
                 <input id="languageSearchKey" type="hidden" name="langauge" value="{{ job.languages.name }}">
@@ -209,6 +210,7 @@
                 <p class="main-font">{{ job.description }}</p>
                 <p class="main-font m-0">Estimated Pay - {{ job.pay }}</p>
             </div>
+            </a>
             {% endfor %}
         </div>
     </div>

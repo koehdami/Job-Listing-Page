@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
-from .models import user_data, categories, job_offers, languages, contactRequests
+from django.http import HttpResponse
+from .models import user_data, categories, job_offers, languages, contactRequests, applications
 from .forms import ContactForm
 import json
 
@@ -257,3 +258,46 @@ def editPosting(request):
             })
     else:
         return redirect("mylistings")
+    
+
+def jobPage(request, id, message=""):
+    applied = False
+    # get id from url and check for job in db, else render error => check if user allready applied
+    try:
+        jobListing = job_offers.objects.get(id=id)
+        jobApplications = applications.objects.filter(job_offer_id=id)
+        for application in jobApplications:
+            if application.user_id == request.user:
+                applied = True
+
+        return render(request, "main/jobPage.html", {
+            "job":jobListing,
+            "user":request.user,
+            "message":message,
+            "applied":applied
+        })
+    except:
+        return render(request, "main/index.html", {
+            "message":"Error, couldn't find job. Please try agian."
+        })
+    
+def apply(request):
+    if request.method == "POST":
+        if not "job_id" in request.POST:
+            return HttpResponse("Error job_id not found")
+        try:
+            job = job_offers.objects.get(id=request.POST["job_id"])
+        except:
+            return HttpResponse("Job is not listed.")
+        
+        # check if allready applied if yes remove else create
+        if applications.objects.filter(user_id=request.user, job_offer_id=job).exists():
+            activeApplications = applications.objects.get(user_id=request.user, job_offer_id=job)
+            activeApplications.delete()
+            return jobPage(request, request.POST["job_id"], "Successfully withdrawn application.")
+        else:
+            applications.objects.create(user_id=request.user, job_offer_id=job)
+            return jobPage(request, request.POST["job_id"], "Successfully applied to job.")
+
+    else:
+        return redirect("/jobs")

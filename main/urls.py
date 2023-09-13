@@ -12,5 +12,7 @@ urlpatterns = [
     path("createListing", views.createListing, name="createListing"),
     path("mylistings", views.mylistings, name="mylistings"),
     path("deletePosting", views.deletePosting, name="deletePosting"),
-    path("editPosting", views.editPosting, name="editPosting")
+    path("editPosting", views.editPosting, name="editPosting"),
+    path("jobs/<str:id>", views.jobPage, name="jobPage"),
+    path("apply", views.apply, name="apply")
 ]
