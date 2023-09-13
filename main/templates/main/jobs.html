@@ -5,6 +5,32 @@
 {% block body %}
 
 <script>
+    // searchbar functionallity, check for filters then apply 
+    const searchCheck = (regularJobEntrieClassList) => {
+        const searchWindow = document.querySelector("#searchInput")
+        const searchKey = searchWindow.value
+        const jobEntries = document.querySelectorAll("#jobEntrie")
+        for(let entrie of jobEntries){
+            jobEntrie = entrie.querySelector("#jobTitle")
+            if(jobEntrie){
+                let titleName = jobEntrie.innerHTML
+                if(!(titleName.toLowerCase()).includes(searchKey.toLowerCase())){
+                    entrie.classList = "d-none"
+                }else{
+                    applyFilters(regularJobEntrieClassList)
+                }
+            }
+        }
+    }
+
+    // addEventListiner to searchbar
+    const searchEngine = (regularJobEntrieClassList) => {
+        const searchWindow = document.querySelector("#searchInput")
+        searchWindow.addEventListener("input", () => {
+            searchCheck(regularJobEntrieClassList)
+        })
+    }
+
     // loop through all items parent.children check for id and apply regular class to make sure only one item is selcted, also check if btn was allready selected for unselect
     const applyActive = (btn, regularBtnClassList) => {
         const btnParent = btn.parentElement.children
@@ -59,13 +85,16 @@
             const entrieAttributes = collectEntrieData(entrie)
             // check if all attributes of filterAttributes are found in entrieAttributes
             if(filterAttributes.every(r => entrieAttributes.includes(r))){
-                entrie.classList = regularJobEntrieClassList
+                // validate that searchKey and Searchbar match before displaying
+                const searchkey = document.querySelector("#searchInput").value
+                const searchbarValue = entrie.querySelector("#jobTitle").innerHTML
+                if((searchbarValue.toLowerCase()).includes(searchkey.toLowerCase())){
+                    entrie.classList = regularJobEntrieClassList
+                }
             }else{
-                entrie.classList = "d-none"
+                    entrie.classList = "d-none"
             }
-
         }
-
     }
     // apply eventlisteners on all btns, send regular styles of elements
     const btnEvents = (btnID) => {
@@ -76,13 +105,18 @@
             btn.addEventListener("click", () => {
                 applyActive(btn, regularBtnClassList)
                 applyFilters(regularJobEntrieClassList)
+                searchCheck(regularJobEntrieClassList)
             })
         }
     }
 
 
     document.addEventListener("DOMContentLoaded", (event) => {
-        // get regular classList to display div when attribute matches
+
+        // active searchbar - regular className to show entrie again
+        const jobEntrieClassList = document.querySelector("#jobEntrie").className
+        searchEngine(jobEntrieClassList)
+
 
         // make menuButtons clickable
         btnEvents("optionsBtn")
@@ -91,6 +125,8 @@
         const searchEntries = document.querySelector("#searchEntries")
         const classSettingsSearch = searchWindow.className
         const classSettingsEntries = searchEntries.className
+
+
         searchSettingsButton.addEventListener("click", () => {
             if(searchWindow.style.display == "none"){
                 searchWindow.style.display = "block"
@@ -114,7 +150,7 @@
     <div class="row w-100">
         <div id="searchWindow" class="col-md-3 col-5 d-flex flex-column align-items-center gap-2 p-2 border border-2 border-dark border-end-0">
             <div class="d-flex w-100">
-                <input class="border border-dark border-2 rounded ps-2 main-font w-100" type="text">
+                <input id="searchInput" class="border border-dark border-2 rounded ps-2 main-font w-100" type="text">
             </div>
             <div id="timeContainer" class="d-flex w-100 gap-2">
                 <button id="optionsBtn" value="False" class="p-2 w-100 bg-light border border-dark border-2 rounded">FULL TIME</button>
@@ -168,7 +204,7 @@
                 <input id="languageSearchKey" type="hidden" name="langauge" value="{{ job.languages.name }}">
                 <input id="timeSearchKey" type="hidden" name="time" value="{{ job.part_time }}">
                 <input type="hidden" name="time" value="{{ job.part_time}}">
-                <p style="margin-bottom: -8px;" class="main-font h3">{{ job.title }}</p>
+                <p id="jobTitle" style="margin-bottom: -8px;" class="main-font h3">{{ job.title }}</p>
                 <p class="main-font">{{ job.company }}</p>
                 <p class="main-font">{{ job.description }}</p>
                 <p class="main-font m-0">Estimated Pay - {{ job.pay }}</p>
