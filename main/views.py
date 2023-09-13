@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
-from .models import user_data, categories, job_offers, languages
+from .models import user_data, categories, job_offers, languages, contactRequests
+from .forms import ContactForm
 import json
 
 # Create your views here.
+
+
 
 
 def login_user(request):
@@ -17,6 +20,10 @@ def login_user(request):
             return render(request, "main/index.html", {
                 "message":"Sucessfully logged in.",
                 "user":request.user
+            })
+        else:
+            return render(request, "main/login.html", {
+                "message":"There is no user with your given credentials"
             })
     else:
         return render(request, "main/login.html", {
@@ -103,10 +110,55 @@ def jobs(request):
         "jobs":job_offers.objects.all()
     })
 
-def contact(request):
-    return render(request, "main/contact.html", {
-        "user":request.user
-    })
+# create form and render it in get request, validate form and create entrie in db
+def contact(request, message=""):
+    if request.user.is_authenticated:
+        initial_data = {
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email':request.user.email,
+        }
+    else:
+        initial_data = {}
+
+    if request.method == "POST":
+        # section to send error messages in post request
+        if message:
+            form = ContactForm(initial=initial_data)
+            return render(request, "main/contact.html", {
+                "form":form,
+                "message":message
+            })
+        
+        # validate form and try: to create entrie
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            try:
+                contactRequests.objects.create(
+                    first_name = form.cleaned_data["first_name"],
+                    last_name = form.cleaned_data["last_name"],
+                    email = form.cleaned_data["email"],
+                    phone_number = form.cleaned_data["phone_number"],
+                    content = form.cleaned_data["context"]
+                )
+                return contact(request, "Successfully created request, u will get a response soon.")
+            except:
+                return contact(request, "Error, request couldn't be created")
+        else:
+            return contact(request, "Form not valid, please try again.")
+
+    else:
+        form = ContactForm(initial=initial_data)
+
+        # make the data fixed if user is logged in
+        if request.user.is_authenticated:
+            form.fields["first_name"].widget.attrs['disabled'] = True
+            form.fields["last_name"].widget.attrs['disabled'] = True
+            form.fields["email"].widget.attrs['disabled'] = True
+
+        return render(request, "main/contact.html", {
+            "form":form
+        })
 
 def createListing(request):
     if request.method == "POST":

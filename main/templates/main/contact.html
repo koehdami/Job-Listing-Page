@@ -4,41 +4,38 @@
 {% block body %}
 
     <div class="container d-flex flex-column gap-3 my-4 main-block">
-        <p class="h2 main-font my-0">Contact Form</p>
-        <div class="d-flex justify-content-between gap-4">
-            <div class="d-flex flex-column w-100">
-                <label for="first-name" class="main-font">First Name</label>
-                <input class="w-100 border border-2 border-dark rounded px-2 py-1" value="{{ user.first_name }}" name="first-name" type="text" class="main-font py-2">
+        <form action="{% url 'contact' %}", method="post">
+            {% csrf_token %}
+           
+            <p class="h2 main-font my-0">Contact Form</p>
+            <div class="d-flex justify-content-between gap-4">
+                <div class="d-flex flex-column w-100">
+                    <label for="first-name" class="main-font">First Name</label>
+                    {{ form.first_name }} 
+                </div>
+                <div class="d-flex flex-column w-100">
+                    <label for="last-name" class="main-font">Last Name</label>
+                    {{ form.last_name }}
+                </div>
+            </div>
+            <div class="d-flex justify-content-between gap-4">
+                <div class="d-flex flex-column w-100">
+                    <label for="email" class="main-font">E-Mail</label>
+                    {{ form.email }}
+                </div>
+                <div class="d-flex flex-column w-100">
+                    <label for="number" class="main-font">Phone Number</label>
+                    {{ form.phone_number }}
+                </div>
             </div>
             <div class="d-flex flex-column w-100">
-                <label for="last-name" class="main-font">Last Name</label>
-                <input class="w-100 border border-2 border-dark rounded px-2 py-1" value="{{ user.last_name }}" name="last-name" type="text" class="main-font py-2">
+                <label for="context" class="main-font">Text Content</label>
+                {{ form.context }}
             </div>
-        </div>
-        <div class="d-flex justify-content-between gap-4">
-            <div class="d-flex flex-column w-100">
-                <label for="email" class="main-font">E-Mail</label>
-                <input class="w-100 border border-2 border-dark rounded px-2 py-1" value="{{ user.email }}" name="email" type="text" class="main-font py-2">
+            <div class="d-flex w-100 mt-3">
+                <input type="submit" value="SUBMIT FORM" class="bg-dark text-light rounded w-100 py-2 main-font">
             </div>
-            <div class="d-flex flex-column w-100">
-                <label for="number" class="main-font">Phone Number</label>
-                <input class="w-100 border border-2 border-dark rounded px-2 py-1" name="number" type="text" class="main-font py-2">
-            </div>
-        </div>
-        <div class="d-flex flex-column w-100">
-            <label for="context" class="main-font">Phone Number</label>
-            <textarea class="w-100 border border-2 border-dark rounded px-2 py-1" name="context" class="main-font py-2" rows="20"></textarea>
-        </div>
-        <div class="d-flex w-100">
-            <p class="main-font m-0">
-                ☐ I have read and understood the privacy policy. I consent to the collection and storage of my information and data electronically for the purpose of responding to my inquiry.
-                Please note that we endeavor to respond to your inquiry within 24 hours. However, this timeframe may vary on holidays and weekends.
-                Thank you for your inquiry!
-            </p>
-        </div>
-        <div class="d-flex w-100">
-            <button class="bg-dark text-light rounded w-100 py-2 main-font">SUBMIT FORM</button>
-        </div>
+        </form>
     </div>
 
 {% endblock %}

@@ -7,6 +7,7 @@ class user_data(models.Model):
     name = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     current_job = models.CharField(max_length=64, default="")
     job_title = models.CharField(max_length=64, default="")
+    phone_number = models.CharField(max_length=32, default="")
 
 class categories(models.Model):
     id = models.IntegerField(primary_key=True, unique=True),
@@ -38,3 +39,11 @@ class applications(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     job_offer_id = models.ForeignKey(job_offers, on_delete=models.CASCADE)
+
+class contactRequests(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
+    first_name = models.TextField(max_length=64)
+    last_name = models.TextField(max_length=64)
+    email = models.EmailField()
+    phone_number = models.TextField(max_length=32)
+    content = models.CharField(max_length=512)
