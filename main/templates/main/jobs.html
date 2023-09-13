@@ -156,18 +156,6 @@
                 <button id="optionsBtn" value="False" class="p-2 w-100 bg-light border border-dark border-2 rounded">FULL TIME</button>
                 <button id="optionsBtn" value="True" class="p-2 w-100 bg-light border border-dark border-2 rounded">PART TIME</button>
             </div>
-            <div class="d-flex flex-column w-100 border border-2 border-dark rounded px-2 py-1">
-                <div class="d-flex">
-                    <p class="main-font m-0">Money Options</p>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <p class="main-font">1000€</p>
-                    <p class="main-font">100.000€</p>
-                </div>
-                <div class="d-flex mx-4 mb-2">
-                    <div class="w-100 border border-2 border-dark"></div>
-                </div>
-            </div>
             {% if categories %}
             <div id="categoryContainer" class="d-flex flex-column gap-2 border border-dark border-2 rounded px-2 py-1 w-100">
                 <div class="d-flex">
@@ -194,10 +182,12 @@
             {% endif %}
         </div>
         <div id="searchEntries" class="col-md-9 col d-flex flex-column border border-2 border-dark p-2 gap-2">
+            {% if user.is_authenticated %}
             <div class="align-self-end d-flex gap-0 gap-sm-2">
                 <a href="{% url 'mylistings' %}" class="text-end"><button class="bg-dark text-light main-font">My Listings</button></a>
                 <a href="{% url 'createListing' %}" class="text-end"><button class="bg-dark text-light main-font">Create Listing</button></a>
             </div>
+            {% endif %}
             {% for job in jobs %}
             <a class="text-decoration-none text-dark" href="{% url 'jobPage' job.id %}">
             <div id="jobEntrie" style="height:fit-content;" class="d-flex flex-column border border-2 border-dark p-3">

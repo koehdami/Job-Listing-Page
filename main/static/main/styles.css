@@ -161,6 +161,15 @@ footer{
     height:43%;
 }
 
+#mobile-navbar{
+    display:none;
+}
+
+#navMenuBtn{
+    display:none;
+}
+
+
 @media screen and (max-width:768px) {
     .create-form{
         width:100%;
@@ -179,13 +188,21 @@ footer{
     body{
         display: flex;
         flex-direction: column;
-        height: max-content;
+        min-height: 100vh;
+        height:100%
     }
     #searchSettings{
         display:block;
     }
     .mid-card-section{
         height: 50%;
+    }
+    .main-block{
+        height: 100%;
+        min-height: fit-content;
+    }
+    #navMenuBtn{
+        display:block;
     }
 }
 

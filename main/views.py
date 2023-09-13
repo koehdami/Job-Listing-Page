@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponse
 from .models import user_data, categories, job_offers, languages, contactRequests, applications
+from django.contrib.auth.decorators import login_required
 from .forms import ContactForm
 import json
 
@@ -71,13 +72,14 @@ def register_user(request):
         "user":request.user
     })
 
+
 def index(request):
     return render(request, "main/index.html", {
         "user":request.user
     })
 
 
-
+@login_required
 def profile(request):
     if request.method == "POST":
         try:
@@ -161,6 +163,7 @@ def contact(request, message=""):
             "form":form
         })
 
+@login_required
 def createListing(request):
     if request.method == "POST":
         try:
@@ -191,12 +194,14 @@ def createListing(request):
         })
     
 
+@login_required
 def mylistings(request):
     return render(request, "main/mylistings.html", {
         "user":request.user,
         "jobs":job_offers.objects.all()
     })
 
+@login_required
 def deletePosting(request):
     if request.method == "POST":
         if "job_id" in request.POST:
@@ -213,7 +218,7 @@ def deletePosting(request):
     else:
         return redirect("mylistings")
     
-
+@login_required
 def editPosting(request):
     if request.method == "POST":
         # if id comes from createPosting, extract values and update entrie in db
@@ -281,6 +286,7 @@ def jobPage(request, id, message=""):
             "message":"Error, couldn't find job. Please try agian."
         })
     
+@login_required
 def apply(request):
     if request.method == "POST":
         if not "job_id" in request.POST:
