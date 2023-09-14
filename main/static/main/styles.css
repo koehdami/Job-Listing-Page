@@ -125,7 +125,11 @@ footer{
 }
 
 .main-block{
-    height:100%;
+    height:100vh;
+}
+
+.index-block{
+    height: 100vh;
 }
 
 .cards-container{
@@ -201,6 +205,12 @@ footer{
     }
     #navMenuBtn{
         display:block;
+    }
+    .cards-container{
+        height: fit-content;
+    }
+    .index-block{
+        height: fit-content;
     }
 }
 
