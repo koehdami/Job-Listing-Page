@@ -188,8 +188,7 @@ footer{
     body{
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
-        height:100%
+        min-height: fit-content;    
     }
     #searchSettings{
         display:block;
@@ -199,7 +198,6 @@ footer{
     }
     .main-block{
         height: 100%;
-        min-height: fit-content;
     }
     #navMenuBtn{
         display:block;
