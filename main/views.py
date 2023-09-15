@@ -207,8 +207,15 @@ def deletePosting(request):
         if "job_id" in request.POST:
             try:
                 job_listing = job_offers.objects.get(id=request.POST["job_id"])
-                job_listing.delete()
-                return mylistings(request)
+                if job_listing.user == request.user:
+                    job_listing.delete()
+                    return mylistings(request)
+                else:
+                    return render(request, "main/mylistings.html", {
+                        "user":request.user,
+                        "jobs":job_offers.objects.all(),
+                        "message":"You can't delete posts from other users."
+                    })
             except:
                 return render(request, "main/mylistings.html", {
                     "user":request.user,
@@ -227,15 +234,22 @@ def editPosting(request):
                     category_entrie = categories.objects.get(id=request.POST["category"])
                     language_entrie = languages.objects.get(id=request.POST["language"])
                     job = job_offers.objects.get(id=request.POST["job_id_edit"])
-                    job.title = request.POST["title"]
-                    job.company = request.POST["companyName"]
-                    job.description = request.POST["jobDescription"]
-                    job.category = category_entrie
-                    job.languages = language_entrie
-                    job.part_time = request.POST["time"]
-                    job.pay = request.POST["jobPay"]
-                    job.save()
-                    return redirect("mylistings")
+                    if job.user == request.user:
+                        job.title = request.POST["title"]
+                        job.company = request.POST["companyName"]
+                        job.description = request.POST["jobDescription"]
+                        job.category = category_entrie
+                        job.languages = language_entrie
+                        job.part_time = request.POST["time"]
+                        job.pay = request.POST["jobPay"]
+                        job.save()
+                        return redirect("mylistings")
+                    else:
+                        return render(request, "main/mylistings.html", {
+                            "user":request.user,
+                            "jobs":job_offers.objects.all(),
+                            "message":"You can't edit posts from other users."
+                        })
                 except:
                     return render(request, "main/mylistings.html", {
                         "user":request.user,
